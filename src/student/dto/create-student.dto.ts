@@ -8,10 +8,10 @@ import {
 } from 'class-validator';
 
 export class CreateStudentDto {
-  @IsUppercase()
+  @IsUppercase({ message: 'Viết hoa vào' })
   name: string;
   @IsInt()
-  @Min(5)
+  @Min(5, { message: 'Nhỏ nhất là 5' })
   @Max(30)
   age: number;
   @IsNumber()
