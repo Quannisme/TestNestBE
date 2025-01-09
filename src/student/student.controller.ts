@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Req,
 } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
@@ -16,7 +17,8 @@ export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
   @Post('/CreateStudent')
-  create(@Body() createStudentDto: CreateStudentDto) {
+  create(@Body() createStudentDto: CreateStudentDto, @Req() request: Request) {
+    console.log('tét', createStudentDto, request.body, request.headers);
     return this.studentService.create(createStudentDto);
   }
 
