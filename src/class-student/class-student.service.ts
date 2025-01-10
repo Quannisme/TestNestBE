@@ -1,15 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { CreateClassStudentDto } from './dto/create-class-student.dto';
 import { UpdateClassStudentDto } from './dto/update-class-student.dto';
+import { StudentClass } from './entities/class-student.entity';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class ClassStudentService {
-  create(createClassStudentDto: CreateClassStudentDto) {
-    return 'This action adds a new classStudent';
+  constructor(@InjectModel(StudentClass.name) private classModel:Model<StudentClass>) {}
+  async create(createClassStudentDto: StudentClass):Promise<StudentClass> { 
+    const res = new this.classModel({
+      name: createClassStudentDto.name
+    });
+    return res.save();  
   }
 
-  findAll() {
-    return `This action returns all classStudent`;
+  async findAll():Promise<StudentClass[]> {
+    const list = await this.classModel.find();
+    return list;
   }
 
   findOne(id: number) {
@@ -23,4 +31,4 @@ export class ClassStudentService {
   remove(id: number) {
     return `This action removes a #${id} classStudent`;
   }
-}
+  }

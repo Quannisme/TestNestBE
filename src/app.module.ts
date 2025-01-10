@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { StudentModule } from './student/student.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { ClassModule } from './class/class.module';
 import { ClassStudentModule } from './class-student/class-student.module';
 
 @Module({
@@ -12,7 +11,6 @@ import { ClassStudentModule } from './class-student/class-student.module';
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.DB_URL),
     StudentModule,
-    ClassModule,
     ClassStudentModule,
   ],
   controllers: [AppController],

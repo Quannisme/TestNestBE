@@ -1,6 +1,8 @@
+import { StudentClass } from './../../class-student/entities/class-student.entity';
 import {
   IsEmail,
   IsInt,
+  IsNotEmpty,
   IsNumber,
   IsUppercase,
   Max,
@@ -18,4 +20,6 @@ export class CreateStudentDto {
   @Min(1)
   @Max(10)
   grade: number;
+  @IsNotEmpty({ message: 'Khong duoc trong Student class' })
+  studentClass: StudentClass;
 }
