@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  ExceptionFilter,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
@@ -7,15 +12,21 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class StudentService {
-  constructor(@InjectModel(Student.name) private studentModel: Model<Student>) {}
+  constructor(
+    @InjectModel(Student.name) private studentModel: Model<Student>,
+  ) {}
   async create(createStudentDto: CreateStudentDto): Promise<Student> {
     const res = new this.studentModel({
       name: createStudentDto.name,
       age: createStudentDto.age,
       grade: createStudentDto.grade,
+      studentClass: createStudentDto.studentClass,
     });
-
-    return res.save();
+    const result = await res.save();
+    if (!result) {
+      throw new NotFoundException('Không thêm mới được');
+    }
+    return result;
   }
 
   async findAll(): Promise<Student[]> {

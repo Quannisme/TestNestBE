@@ -7,24 +7,36 @@ import {
   Param,
   Delete,
   Req,
+  Res,
+  UseFilters,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import { HttpExceptionFilter } from 'src/exception-filter/http-exception.filter';
 
 @Controller('student')
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
   @Post('/CreateStudent')
-  create(@Body() createStudentDto: CreateStudentDto, @Req() request: Request) {
-    console.log('tét', createStudentDto, request.body, request.headers);
-    return this.studentService.create(createStudentDto);
+  async create(
+    @Body() createStudentDto: CreateStudentDto,
+    @Req() request: Request,
+    @Res() res: Response,
+  ) {
+    console.log('1', createStudentDto.name);
+    const temp = await this.studentService.create(createStudentDto);
+    res.status(HttpStatus.CREATED).json(temp);
   }
 
   @Get()
-  findAll() {
-    return this.studentService.findAll();
+  async findAll(@Res() res: Response) {
+    const list = await this.studentService.findAll();
+    res.status(HttpStatus.OK).json(list);
   }
 
   @Get(':id')
